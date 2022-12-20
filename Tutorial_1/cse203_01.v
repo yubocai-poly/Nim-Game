@@ -34,6 +34,7 @@ Proof.
  * names `hA` and `hB`. *)
 move=> hA hB.
 (* The goal can be solved by `hA` *)
+(* If the goal is already in your context, you can use the assumption tactic to immediately prove the goal. *)
 assumption.
 Qed.
 
@@ -55,14 +56,14 @@ Qed.
 
 Lemma ex0 : A -> A.
 move => a.
-apply a.
+trivial.
 Qed.
 
 Lemma ex1 : forall A : Prop, A -> A.
 Proof.
 move => a.
-move => b.
-apply b.
+move => a0.
+apply a0.
 Qed.
   
 Lemma ex2 : (A -> B) -> (B -> C) -> A -> C.
@@ -70,7 +71,6 @@ Proof.
 move => ab.
 move => bc.
 move => a.
-
 (* Here we prove from backward *)
 apply bc.
 apply ab.
@@ -84,9 +84,8 @@ move => ba.
 move => b.
 
 apply abc.
-apply ba.
-apply b.
-apply b.
+- apply ba. apply b.
+- apply b. 
 Qed.
 
 (* ====================================================================
@@ -106,8 +105,8 @@ Qed.
 Lemma demo_conj2 : A -> B -> A /\ B.
 Proof.
 move=> a b; split.
-+ trivial.
-+ trivial.
+- trivial.
+- trivial.
 Qed.
 
 (* your turn *)
@@ -203,11 +202,11 @@ Lemma not_ex2 :  (A -> B) -> ~B -> ~A.
 Proof.
 move => ab. 
 move => not_b.
-move => not_a.
+move => a.
 
 apply not_b. (* Here not_b is false *)
 apply ab.
-apply not_a.
+apply a.
 Qed.
 
 Lemma not_ex3 : ~ ~(A \/ ~A).
@@ -215,17 +214,15 @@ Proof.
 move => h.
 apply h.
 right.
-
-move => not_a.
+move => a.
 apply h.
 left.
-
-apply not_a.
+apply a.
 Qed.
 
 Lemma not_ex4 :  (A \/ B) /\ C <-> (A /\ C) \/ (B /\ C).
 Proof. 
-split.
+split. (* split the lemma into two direction *)
 
 + move => abc. 
 case: abc => [ab c].

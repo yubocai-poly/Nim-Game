@@ -1,10 +1,11 @@
-From mathcomp Require Import ssreflect.
+Require Import ssreflect.
 
 
 Parameter A B C D : Prop.
 
 Check (A->(A\/B)).
 
+(* Here move is assuming A is true*)
 Lemma l1 : A -> A.
   move => a.
   exact a.
@@ -12,7 +13,8 @@ Qed.
 
 Check l1.
 
-Lemma l2 : A -> (B -> A).
+(* This means if A and B is True, then A is true *)
+Lemma l2 : A -> (B -> A). 
   move => a.
   move => b.
   exact a.
@@ -29,9 +31,8 @@ Lemma l4 : (A -> B) -> (B -> C) -> A -> C.
 move => ab.
 move => bc.
 move => a.
-
+(* Here since B to C is true, then We substitute C into B *)
 apply bc.
-
 apply ab.
 exact a.
 Qed.
