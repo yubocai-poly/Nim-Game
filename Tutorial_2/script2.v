@@ -112,11 +112,11 @@ move => h2.
 case h2 => [t pt].
 exists t.
 apply h1.
-done.  
+apply pt.
 Qed. 
 
 
-
+(* Here R is the relation in mathematical meaning *)
 Parameter R : nat -> nat -> Prop.
 
 Axiom R_trans : forall x y z, R x y ->
@@ -126,13 +126,11 @@ Axiom R_trans : forall x y z, R x y ->
 
 Lemma exR : R 1 2 -> R 2 3 -> R 1 3.
 move => r12 r23.
-apply R_trans with 2; assumption.
+apply R_trans with 2.
+apply r12.
+apply r23.
 Qed.
 
-
-
-
-  
 
 
 Lemma sym : forall (x: nat) y,
@@ -140,7 +138,7 @@ Lemma sym : forall (x: nat) y,
     y = x.
 Proof.
 move => x y xy.
-rewrite -xy.
+rewrite xy.
 reflexivity.
 Qed.
 
